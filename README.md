@@ -1,5 +1,6 @@
 # Stock Market Regime Detector
 
+
 A quantitative finance project that identifies hidden market regimes from
 historical price data using a **Gaussian Hidden Markov Model (HMM)** trained
 on daily log returns of the S&P 500 ETF (SPY).
@@ -89,13 +90,13 @@ A **Hidden Markov Model** is a generative probabilistic model that assumes:
 
 Formally an HMM is described by three parameter sets:
 
-| Symbol | Name | Meaning |
-|--------|------|---------|
-| **π** | Initial probabilities | P(first state = k) |
-| **A** | Transition matrix | A[i,j] = P(next state = j \| current = i) |
-| **B** | Emission parameters | μ_k, Σ_k of the Gaussian for state k |
+| Symbol | Name                  | Meaning                                                            |
+| ------ | --------------------- | ------------------------------------------------------------------ |
+| **π**  | Initial probabilities | $\mathrm{P}(\text{first state }= k)$                               |
+| **A**  | Transition matrix     | $A[i,j] = \mathrm{P}(\text{next state } = j\|\text{ current }= i)$ |
+| **B**  | Emission parameters   | $μ_k$, $Σ_k$ of the Gaussian for state $k$                         |
 
-Training uses the **Baum-Welch algorithm** (Expectation-Maximisation) to
+Training uses the **EM algorithm** (Expectation-Maximisation) to
 maximise the likelihood of the observed data.  Regime prediction uses the
 **Viterbi algorithm** to find the single most-likely hidden state sequence.
 
@@ -113,11 +114,9 @@ underlying economic state.  A HMM is therefore a natural fit:
 ### Log Returns
 
 Daily log returns are computed as:
-
-```
-r_t = log(Close_t / Close_{t-1})
-```
-
+$$
+r_t = \log(\text{Close}_t / \text{Close}_{t-1})
+$$
 Log returns are preferred over simple returns because they are:
 
 * **Time-additive**: multi-day returns sum to the total log return.
@@ -132,14 +131,12 @@ converges efficiently regardless of the asset's price level.
 ### Transition Probabilities
 
 The transition matrix **A** has entries:
-
-```
-A[i, j] = P(state at t+1 = j | state at t = i)
-```
-
+$$
+A[i, j] = \mathrm{P}(\text{state at } (t+1) = j | \text{ state at } t = i)
+$$
 Key interpretations:
 
-* **High diagonal values** (e.g. A[0,0] = 0.97) mean regime *i* is **sticky**:
+* **High diagonal values** (e.g. $A[0,0]$ = 0.97) mean regime *i* is **sticky**:
   once the market enters it, it tends to stay there for many days.
 * **Off-diagonal values** measure how quickly the market transitions from one
   regime to another.
@@ -156,20 +153,26 @@ yfinance download
       ▼
  Closing prices
       │
-      ▼  log(Close_t / Close_{t-1})
+      │  log(Close_t / Close_{t-1})
+      ▼  
  Log returns  (n × 1)
       │
-      ▼  StandardScaler
+      │  StandardScaler
+      ▼
  Scaled returns (n × 1)
       │
-      ▼  GaussianHMM.fit()  [Baum-Welch EM, 1 000 iterations]
+      │  GaussianHMM.fit()  [EM, 1000 iterations]
+      ▼
  Fitted HMM
       │
-      ▼  GaussianHMM.predict()  [Viterbi]
+      │  GaussianHMM.predict()  [Viterbi]
+      ▼
  State sequence  [0, 0, 2, 1, 1, …]
       │
-      ▼  mean / std per state → label_states()
+      │  mean / std per state → label_states()
+      ▼
  Regime labels  ["Low Vol Bull", "Crash", …]
+      │
       │
       ▼
  Visualisations + saved artefacts
@@ -254,4 +257,3 @@ yfinance download
 
 ---
 
-*Built with Python 3.11, hmmlearn, scikit-learn, yfinance, matplotlib, and seaborn.*

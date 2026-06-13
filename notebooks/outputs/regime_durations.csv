@@ -1,0 +1,4 @@
+Regime,Mean Duration,Median Duration,Maximum Duration,Std Dev of Duration
+Low Volatility Bull,43.916666666666664,35.0,344,47.79113992735008
+High Volatility Bull,30.105263157894736,20.0,120,28.208300514444396
+Crash / Bear Regime,30.1,23.5,85,24.476315082136036

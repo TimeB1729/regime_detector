@@ -114,7 +114,7 @@ underlying economic state.  A HMM is therefore a natural fit:
 ### Log Returns
 
 Daily log returns are computed as:
-$r_t = \log(\text{Close}_t / \text{Close}_{t-1})$
+$r_t = \log \left( \text{Close}_t / \text{Close}_{t-1} \right)$
 Log returns are preferred over simple returns because they are:
 
 * **Time-additive**: multi-day returns sum to the total log return.

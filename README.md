@@ -113,8 +113,8 @@ underlying economic state.  A HMM is therefore a natural fit:
 
 ### Log Returns
 
-Daily log returns are computed as:
-$r_t = \log \left( \text{Close}_t / \text{Close}_{t-1} \right)$
+Daily log returns are computed as, $r_t = \log \left( \frac{\text{Close}_ {t}} {\text{Close}_{t-1}} \right)$
+
 Log returns are preferred over simple returns because they are:
 
 * **Time-additive**: multi-day returns sum to the total log return.
@@ -128,8 +128,9 @@ converges efficiently regardless of the asset's price level.
 
 ### Transition Probabilities
 
-The transition matrix **A** has entries:
+The transition matrix **A** has entries,
 $A[i, j] = \mathrm{P}(\text{state at } (t+1) = j | \text{ state at } t = i)$
+
 Key interpretations:
 
 * **High diagonal values** (e.g. $A[0,0]$ = 0.97) mean regime *i* is **sticky**:
